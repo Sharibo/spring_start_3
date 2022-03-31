@@ -1,11 +1,15 @@
 package com.gmail.alexejkrawez.controllers;
 
 import com.gmail.alexejkrawez.dao.PersonDAO;
+import com.gmail.alexejkrawez.model.Person;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -34,4 +38,17 @@ public class PeopleController {
 
         return "people/show";
     }
+
+    @GetMapping("/new")
+    public String newPerson(Model model) {
+        model.addAttribute("person", new Person());
+        return "people/new";
+    }
+
+    @PostMapping()
+    public String create(@ModelAttribute("person") Person person) {
+        personDAO.save(person);
+        return "redirect:/people"; // redirect: - позволяет задать переадресацию.
+    }
+
 }
